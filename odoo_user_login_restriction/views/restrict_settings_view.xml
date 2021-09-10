@@ -1,0 +1,72 @@
+<odoo>
+  <data noupdate="1">
+    <record id="restrict_ip_view_form" model="ir.ui.view">
+        <field name="name">restrict_ip.form</field>
+        <field name="model">restrict.settings</field>
+        <field name="arch" type="xml">
+            <form string="Restrict Admin" create="false" delete="false">
+                <sheet>
+                    <div class="oe_title">
+                        <div class="oe_edit_only">
+                            <label for="name" string="Name"/>
+                        </div>
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="Record name"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="General Information">
+                            <separator string="Use IP/Groups to allow admin to login" colspan="4"/>
+                            <p class="text-muted">
+                                For multiple IP use Comma-delimited format to seprate the IP. 
+                                <br/>eg. 192.168.10.111,192,168.10.118
+                            </p>
+                            <group>
+                                    <field name="allowed_ip"  placeholder="IP"/>
+                            </group>
+                            <separator string="OR"/>
+                            <group>
+                                <field name="allowed_group_ids" widget="many2many_tags" placeholder="groups"/>
+                            </group>
+                        </page>
+
+                        <page string="Extra features">
+                            <separator string="Login Attempt Restriction"/>
+
+                            <separator string="Set Max Attempts and Cooldown time to restrict the user from attempting wrong login credential "/>
+                            <group>
+                                <field name="max_try"  placeholder="Max Attempts"/>
+                            </group>
+
+                            <group>
+                                <field name="cooldown_time"  placeholder="Cooldown Time"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+    <record id="ip_action" model="ir.actions.act_window">
+        <field name="name">Restrict IP Action</field>
+        <field name="res_model">restrict.settings</field>
+        <field name="view_mode">form</field>
+        <field name="res_id" ref="odoo_user_login_restriction.restrict_id"/>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to add a new Rest Webservice Account.
+          </p>
+        </field>
+
+    </record>
+
+    <menuitem id="ip_restrict" name="IP Restrict setting" parent="base.menu_custom" sequence="1"/>
+    <menuitem id="ip_restrict_child" name="IP Restrict" parent="ip_restrict" action="ip_action" sequence="1"/>
+
+  </data>
+</odoo>
